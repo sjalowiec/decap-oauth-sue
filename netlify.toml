@@ -2,10 +2,11 @@
   command = "npm install"
   publish = "public"
 
-[[functions]]
+[functions]
   directory = "netlify/functions"
 
 [[redirects]]
-  from = "/*"
+  from = "/"
   to = "/.netlify/functions/index"
   status = 200
+  force = true
