@@ -1,0 +1,15 @@
+{
+  "name": "decap-oauth-sue",
+  "version": "1.0.0",
+  "description": "Simple GitHub OAuth for Decap CMS",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "passport": "^0.7.0",
+    "passport-github2": "^0.1.12"
+  }
+}
+
