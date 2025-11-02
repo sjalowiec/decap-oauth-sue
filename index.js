@@ -1,10 +1,10 @@
 import express from "express";
+import serverless from "serverless-http";
 import passport from "passport";
 import { Strategy as GitHubStrategy } from "passport-github2";
 
 const app = express();
 
-// 🧭 Replace these values after you register your OAuth app on GitHub
 const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID || "replace-me";
 const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET || "replace-me";
 const CALLBACK_URL = process.env.CALLBACK_URL || "https://YOUR-OAUTH-SITE.netlify.app/auth/github/callback";
@@ -22,15 +22,14 @@ passport.use(
 
 app.use(passport.initialize());
 
-// --- OAuth routes ---
 app.get("/auth/github", passport.authenticate("github", { scope: ["repo", "user"] }));
+
 app.get(
   "/auth/github/callback",
   passport.authenticate("github", { failureRedirect: "/" }),
   (req, res) => res.send("GitHub auth successful. You can close this window.")
 );
 
-app.get("/", (req, res) => res.send("Decap OAuth Provider running"));
+app.get("/", (req, res) => res.send("Decap OAuth Provider running ✅"));
 
-const port = process.env.PORT || 8080;
-app.listen(port, () => console.log(`Server running on port ${port}`));
+export const handler = serverless(app);
