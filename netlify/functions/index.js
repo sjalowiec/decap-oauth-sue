@@ -18,7 +18,9 @@ passport.use(
       clientSecret: GITHUB_CLIENT_SECRET,
       callbackURL: CALLBACK_URL,
     },
-    (accessToken, refreshToken, profile, done) => done(null, { profile, accessToken })
+    (accessToken, refreshToken, profile, done) => {
+      return done(null, { profile, accessToken });
+    }
   )
 );
 
@@ -27,13 +29,13 @@ app.use(passport.initialize());
 // GitHub login route
 app.get("/auth/github", passport.authenticate("github", { scope: ["repo", "user"] }));
 
-// GitHub callback route
+// GitHub callback route — disable sessions completely
 app.get(
   "/auth/github/callback",
-  passport.authenticate("github", { failureRedirect: "/" }),
+  passport.authenticate("github", { failureRedirect: "/", session: false }),
   (req, res) => {
     res.send(
-      "✅ GitHub authorization successful. You can close this window and return to Knit by Machine."
+      "✅ GitHub authorization successful! You can close this window and return to Knit by Machine."
     );
   }
 );
